@@ -1,0 +1,25 @@
+services:
+  inference:
+    build:
+      context: ../../
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    env_file: config.env
+    ports:
+      - "8000:8000"
+    shm_size: 2g
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      stack:
+        soft: 67108864
+        hard: 67108864
+    volumes:
+      - /path/to/huggingface-model:/srv/run/model
+      - /path/to/trt-engine:/srv/run/repo/tensorrt_llm/1
