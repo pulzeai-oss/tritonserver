@@ -26,6 +26,7 @@ func Execute() error {
 		IntVar(&opts.MetricsPort, "metrics-port", 8002, "Port to bind metrics server to")
 	rootCmd.Flags().
 		StringVar(&opts.ModelRepo, "model-repo", "/srv/run/repo", "Path to Triton model repository")
+	rootCmd.Flags().IntVar(&opts.Verbosity, "verbosity", 1, "Log verbosity")
 	rootCmd.Flags().IntVar(&opts.WorldSize, "world-size", 1, "Number of GPUs to use for inference")
 
 	return rootCmd.Execute()

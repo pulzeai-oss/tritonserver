@@ -45,7 +45,7 @@ func Run(opts *config.Opts) error {
 				fmt.Sprintf("--grpc-port=%d", opts.GrpcPort),
 				fmt.Sprintf("--http-port=%d", opts.HttpPort),
 				"--log-file=/dev/stdout",
-				"--log-verbose=3",
+				fmt.Sprintf("--log-verbose=%d", opts.Verbosity),
 				fmt.Sprintf("--metrics-port=%d", opts.MetricsPort),
 			)
 		} else {

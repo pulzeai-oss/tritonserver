@@ -28,6 +28,7 @@ type Opts struct {
 	HttpPort    int
 	MetricsPort int
 	ModelRepo   string
+	Verbosity   int
 	WorldSize   int
 }
 
