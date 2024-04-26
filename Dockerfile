@@ -17,6 +17,14 @@ FROM nvcr.io/nvidia/tritonserver:24.03-trtllm-python-py3
 # Install tini
 RUN apt-get update && apt-get install --yes --no-install-recommends tini && rm -rf /var/lib/apt/lists/*
 
+# Create nonroot account
+RUN groupadd --gid 65532 nonroot \
+    && useradd --no-log-init --create-home \
+        --uid 65532 \
+        --gid 65532 \
+        --shell /sbin/nologin \
+        nonroot
+
 ENV TRTLLM__MODEL_REPO_DIR /srv/run/repo
 WORKDIR ${TRTLLM__MODEL_REPO_DIR}
 

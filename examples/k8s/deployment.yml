@@ -1,0 +1,101 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mistral-7b-instruct
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      model: mistral-7b-instruct
+  template:
+    metadata:
+      labels:
+        model: mistral-7b-instruct
+    spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+            - matchExpressions:
+              - key: cloud.google.com/gke-accelerator
+                operator: In
+                values:
+                - nvidia-l4
+      initContainers:
+      - name: download-engine
+        image: pkgxdev/pkgx:v1
+        args:
+        - pkgx
+        - huggingface-cli
+        - download
+        - --local-dir=/srv/run/repo/tensorrt_llm/1
+        - --local-dir-use-symlinks=False
+        - pulze/mistral-7b-instruct-v0.2-trtllm
+        volumeMounts:
+        - mountPath: /srv/run/repo/tensorrt_llm/1
+          name: trt-engine
+      - name: download-model
+        image: pkgxdev/pkgx:v1
+        args:
+        - pkgx
+        - huggingface-cli
+        - download
+        - --local-dir=/srv/run/model
+        - --local-dir-use-symlinks=False
+        - --revision=41b61a33a2483885c981aa79e0df6b32407ed873
+        - mistralai/Mistral-7B-Instruct-v0.2
+        env:
+        - name: HUGGING_FACE_HUB_TOKEN
+          value: hf_YOURTOKEN
+        volumeMounts:
+        - mountPath: /srv/run/model
+          name: model
+      containers:
+      - name: main
+        image: ghcr.io/pulzeai-oss/tritonserver:20240426.1_cde9a7a
+        envFrom:
+        - configMapRef:
+            name: mistral-7b-instruct-config
+        ports:
+        - name: http
+          containerPort: 8000
+        - name: grpc
+          containerPort: 8001
+        - name: metrics
+          containerPort: 8002
+        resources:
+          requests:
+            cpu: "14"
+          limits:
+            memory: "56Gi"
+            nvidia.com/gpu: 1
+        livenessProbe:
+          initialDelaySeconds: 60
+          httpGet:
+            path: /v2/health/live
+            port: http
+        readinessProbe:
+          httpGet:
+            path: /v2/health/ready
+            port: http
+        volumeMounts:
+        - mountPath: /dev/shm
+          name: dshm
+        - mountPath: /srv/run/model
+          name: model
+        - mountPath: /srv/run/repo/tensorrt_llm/1
+          name: trt-engine
+      securityContext:
+        runAsUser: 65532
+        fsGroup: 65532
+      volumes:
+      - name: dshm
+        emptyDir:
+          medium: Memory
+          sizeLimit: 2Gi
+      - name: model
+        emptyDir: {}
+      - name: trt-engine
+        emptyDir: {}
