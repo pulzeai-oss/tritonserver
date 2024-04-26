@@ -54,7 +54,7 @@ spec:
           name: model
       containers:
       - name: main
-        image: ghcr.io/pulzeai-oss/tritonserver:20240426.7_986b18a
+        image: ghcr.io/pulzeai-oss/tritonserver:20240426.9_4ac4a77
         envFrom:
         - configMapRef:
             name: mistral-7b-instruct-config
