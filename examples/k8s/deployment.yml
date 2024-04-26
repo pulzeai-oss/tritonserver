@@ -72,7 +72,7 @@ spec:
             memory: "56Gi"
             nvidia.com/gpu: 1
         livenessProbe:
-          initialDelaySeconds: 60
+          initialDelaySeconds: 180
           httpGet:
             path: /v2/health/live
             port: http
