@@ -23,11 +23,6 @@ func exec(argv []string) error {
 }
 
 func Run(opts *config.Opts) error {
-	// Read configuration from environment variables and fill repo templates
-	if err := config.FillConfigTemplatesFromEnv(opts.ModelRepo); err != nil {
-		return fmt.Errorf("failed to fill config templates from environment variables: %v", err)
-	}
-
 	// Build args
 	args := []string{MpiRunExecutable, "--allow-run-as-root"}
 	for i := 0; i < opts.WorldSize; i++ {

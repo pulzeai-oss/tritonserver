@@ -78,17 +78,17 @@ func FillConfigTemplatesFromEnv(modelRepo string) error {
 	}
 
 	for _, elem := range []struct {
-		path string
-		args []string
+		modelDir string
+		args     []string
 	}{
-		{path: filepath.Join(modelRepo, DIR_BLS_IDENTIFIER, PBCONFIG_PATH), args: cfg.bls},
-		{path: filepath.Join(modelRepo, DIR_ENSEMBLE_IDENTIFIER, PBCONFIG_PATH), args: cfg.ensemble},
-		{path: filepath.Join(modelRepo, DIR_ENGINE_IDENTIFIER, PBCONFIG_PATH), args: append([]string{"${engine_dir}", filepath.Join(modelRepo, DIR_ENGINE_IDENTIFIER, "1")}, cfg.engine...)},
-		{path: filepath.Join(modelRepo, DIR_POSTPROCESSING_IDENTIFIER, PBCONFIG_PATH), args: cfg.postprocessing},
-		{path: filepath.Join(modelRepo, DIR_PREPROCESSING_IDENTIFIER, PBCONFIG_PATH), args: cfg.preprocessing},
+		{modelDir: DIR_BLS_IDENTIFIER, args: cfg.bls},
+		{modelDir: DIR_ENGINE_IDENTIFIER, args: append([]string{"${engine_dir}", filepath.Join(modelRepo, DIR_ENGINE_IDENTIFIER, "1")}, cfg.engine...)},
+		{modelDir: DIR_ENSEMBLE_IDENTIFIER, args: cfg.ensemble},
+		{modelDir: DIR_POSTPROCESSING_IDENTIFIER, args: cfg.postprocessing},
+		{modelDir: DIR_PREPROCESSING_IDENTIFIER, args: cfg.preprocessing},
 	} {
-		if err := replace(elem.path, elem.args); err != nil {
-			return fmt.Errorf("failed to update configuration %s: %v", elem.path, err)
+		if err := replace(filepath.Join(modelRepo, elem.modelDir, PBCONFIG_PATH), elem.args); err != nil {
+			return fmt.Errorf("failed to update model configuration %s: %v", elem.modelDir, err)
 		}
 	}
 

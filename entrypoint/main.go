@@ -8,6 +8,6 @@ import (
 
 func main() {
 	if err := cmd.Execute(); err != nil {
-		log.Fatalf("failed to execute entrypoint: %v", err)
+		log.Fatal(err)
 	}
 }
