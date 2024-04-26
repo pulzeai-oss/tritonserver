@@ -50,7 +50,7 @@ func Run(opts *config.Opts) error {
 			)
 		} else {
 			workerArgs = append(workerArgs,
-				fmt.Sprintf("--load-model=%s", config.DIR_MODEL_IDENTIFIER),
+				fmt.Sprintf("--load-model=%s", config.DIR_ENGINE_IDENTIFIER),
 				"--model-control-mode=explicit",
 			)
 		}

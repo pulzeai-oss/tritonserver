@@ -12,13 +12,13 @@ const (
 	ENV_PREFIX                    = "TRTLLM"
 	ENV_SPLITTER                  = "__"
 	ENV_BLS_IDENTIFIER            = "BLS"
+	ENV_ENGINE_IDENTIFIER         = "MODEL"
 	ENV_ENSEMBLE_IDENTIFIER       = "ENSEMBLE"
-	ENV_MODEL_IDENTIFIER          = "MODEL"
 	ENV_POSTPROCESSING_IDENTIFIER = "POSTPROCESSING"
 	ENV_PREPROCESSING_IDENTIFIER  = "PREPROCESSING"
 	DIR_BLS_IDENTIFIER            = "tensorrt_llm_bls"
+	DIR_ENGINE_IDENTIFIER         = "tensorrt_llm"
 	DIR_ENSEMBLE_IDENTIFIER       = "ensemble"
-	DIR_MODEL_IDENTIFIER          = "tensorrt_llm"
 	DIR_POSTPROCESSING_IDENTIFIER = "postprocessing"
 	DIR_PREPROCESSING_IDENTIFIER  = "preprocessing"
 )
@@ -34,8 +34,8 @@ type Opts struct {
 
 type inferenceConfig struct {
 	bls            []string
+	engine         []string
 	ensemble       []string
-	model          []string
 	postprocessing []string
 	preprocessing  []string
 }
@@ -66,10 +66,10 @@ func FillConfigTemplatesFromEnv(modelRepo string) error {
 		switch kparts[1] {
 		case ENV_BLS_IDENTIFIER:
 			cfg.bls = append(cfg.bls, toReplace, v)
+		case ENV_ENGINE_IDENTIFIER:
+			cfg.engine = append(cfg.engine, toReplace, v)
 		case ENV_ENSEMBLE_IDENTIFIER:
 			cfg.ensemble = append(cfg.ensemble, toReplace, v)
-		case ENV_MODEL_IDENTIFIER:
-			cfg.model = append(cfg.model, toReplace, v)
 		case ENV_POSTPROCESSING_IDENTIFIER:
 			cfg.postprocessing = append(cfg.postprocessing, toReplace, v)
 		case ENV_PREPROCESSING_IDENTIFIER:
@@ -83,7 +83,7 @@ func FillConfigTemplatesFromEnv(modelRepo string) error {
 	}{
 		{path: filepath.Join(modelRepo, DIR_BLS_IDENTIFIER, PBCONFIG_PATH), args: cfg.bls},
 		{path: filepath.Join(modelRepo, DIR_ENSEMBLE_IDENTIFIER, PBCONFIG_PATH), args: cfg.ensemble},
-		{path: filepath.Join(modelRepo, DIR_MODEL_IDENTIFIER, PBCONFIG_PATH), args: append([]string{"${engine_dir}", filepath.Join(modelRepo, DIR_MODEL_IDENTIFIER, "1")}, cfg.model...)},
+		{path: filepath.Join(modelRepo, DIR_ENGINE_IDENTIFIER, PBCONFIG_PATH), args: append([]string{"${engine_dir}", filepath.Join(modelRepo, DIR_ENGINE_IDENTIFIER, "1")}, cfg.engine...)},
 		{path: filepath.Join(modelRepo, DIR_POSTPROCESSING_IDENTIFIER, PBCONFIG_PATH), args: cfg.postprocessing},
 		{path: filepath.Join(modelRepo, DIR_PREPROCESSING_IDENTIFIER, PBCONFIG_PATH), args: cfg.preprocessing},
 	} {
