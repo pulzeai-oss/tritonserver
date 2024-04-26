@@ -1,4 +1,4 @@
-module github.com/pulzeai-oss/tensorrt-llm-deployment/entrypoint
+module github.com/pulzeai-oss/tritonserver/entrypoint
 
 go 1.22.2
 

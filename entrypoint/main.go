@@ -3,7 +3,7 @@ package main
 import (
 	"log"
 
-	"github.com/pulzeai-oss/tensorrt-llm-deployment/entrypoint/cmd"
+	"github.com/pulzeai-oss/tritonserver/entrypoint/cmd"
 )
 
 func main() {

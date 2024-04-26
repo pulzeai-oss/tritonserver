@@ -3,8 +3,8 @@ package cmd
 import (
 	"log"
 
-	"github.com/pulzeai-oss/tensorrt-llm-deployment/entrypoint/internal/config"
-	"github.com/pulzeai-oss/tensorrt-llm-deployment/entrypoint/internal/exec"
+	"github.com/pulzeai-oss/tritonserver/entrypoint/internal/config"
+	"github.com/pulzeai-oss/tritonserver/entrypoint/internal/exec"
 	"github.com/spf13/cobra"
 )
 
