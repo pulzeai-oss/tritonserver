@@ -54,7 +54,7 @@ spec:
           name: model
       containers:
       - name: main
-        image: ghcr.io/pulzeai-oss/tritonserver:20240426.1_cde9a7a
+        image: ghcr.io/pulzeai-oss/tritonserver:20240426.3_91c3aa6
         envFrom:
         - configMapRef:
             name: mistral-7b-instruct-config
@@ -80,6 +80,8 @@ spec:
           httpGet:
             path: /v2/health/ready
             port: http
+        securityContext:
+          runAsUser: 65532
         volumeMounts:
         - mountPath: /dev/shm
           name: dshm
@@ -87,9 +89,6 @@ spec:
           name: model
         - mountPath: /srv/run/repo/tensorrt_llm/1
           name: trt-engine
-      securityContext:
-        runAsUser: 65532
-        fsGroup: 65532
       volumes:
       - name: dshm
         emptyDir:
