@@ -13,7 +13,7 @@ We simplify this by:
 - Baking the necessary configuration templates into the docker image
 - Using an entrypoint that:
     - Renders the configuration templates on the fly from environment variables
-    - Correctly forwards signals to child processes, allowing in-flight requests to be drained before termination
+    - Is replaced by `mpirun` via an `exec` call that correctly forwards signals to the respective workers, allowing in-flight requests to be drained before termination
 - Bundling the correct revision of the TensorRT-LLM backend for the base [Triton NGC image](https://catalog.ngc.nvidia.com/orgs/nvidia/containers/tritonserver)
 
 ## Configuration
