@@ -22,7 +22,7 @@ We simplify this by:
 
 The pre-built TensorRT-LLM engine should be mounted into `/srv/run/repo/tensorrt_llm/1`.
 
-See [examples](./examples) for instructions on deploying on [Kubernetes](./examples/k8s) or locally using [docker-compose](./examples/docker-compose).
+See [examples](./deploy) for instructions on deploying on [Kubernetes](./deploy/k8s) or locally using [docker-compose](./deploy/docker-compose).
 
 ## TODOs
 - [ ] Helm chart
